@@ -1,0 +1,90 @@
+/* =====================================================
+   ONE PIECE PORTFOLIO — DESIGN TOKENS
+===================================================== */
+
+:root {
+  /* — Cores primárias — */
+  --color-ocean-deep:    #020B18;
+  --color-ocean-mid:     #0A2463;
+  --color-ocean-light:   #1565C0;
+  --color-ocean-surface: #1E88E5;
+  --color-sky-dawn:      #FF6B35;
+  --color-sky-day:       #87CEEB;
+  --color-sky-dusk:      #4A1942;
+  --color-gold:          #FFD700;
+  --color-gold-dark:     #C9A600;
+  --color-luffy-red:     #CC2936;
+  --color-luffy-dark:    #8B0000;
+  --color-foam:          rgba(255, 255, 255, 0.6);
+  --color-island-sand:   #F4D03F;
+  --color-island-green:  #27AE60;
+
+  /* — Neutros — */
+  --color-white:         #FFFFFF;
+  --color-white-alpha:   rgba(255, 255, 255, 0.1);
+  --color-black:         #000000;
+  --color-text-primary:  #F0F4F8;
+  --color-text-muted:    rgba(240, 244, 248, 0.65);
+
+  /* — Glassmorphism — */
+  --glass-bg:            rgba(2, 11, 24, 0.55);
+  --glass-border:        rgba(255, 215, 0, 0.2);
+  --glass-blur:          12px;
+
+  /* — Tipografia — */
+  --font-display:        'Pirata One', cursive;
+  --font-body:           'Inter', sans-serif;
+
+  /* — Tamanhos de fonte — */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+  --text-4xl:  2.25rem;
+  --text-5xl:  3rem;
+  --text-6xl:  3.75rem;
+  --text-7xl:  4.5rem;
+
+  /* — Espaçamentos — */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-10:  2.5rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-20:  5rem;
+  --space-24:  6rem;
+  --space-32:  8rem;
+
+  /* — Border radius — */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1rem;
+  --radius-xl:   1.5rem;
+  --radius-full: 9999px;
+
+  /* — Sombras — */
+  --shadow-gold: 0 0 20px rgba(255, 215, 0, 0.3);
+  --shadow-glow: 0 0 40px rgba(30, 136, 229, 0.4);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* — Transições — */
+  --transition-fast:   150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow:   600ms ease;
+
+  /* — Z-index — */
+  --z-ocean:    0;
+  --z-waves:    10;
+  --z-islands:  20;
+  --z-boat:     30;
+  --z-ui:       40;
+  --z-modal:    50;
+  --z-nav:      60;
+}

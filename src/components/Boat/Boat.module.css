@@ -1,0 +1,241 @@
+/* =============================================
+   BOAT — Going Merry com física de navegação
+   ============================================= */
+
+.boatContainer {
+  position: absolute;
+  /* Barco fica na linha d'água, extremamente próximo das ilhas que estão em 50% */
+  top: 55%;
+  z-index: var(--z-boat);
+  pointer-events: none;
+  /* Sem transition aqui — posição controlada pelo JS lerp */
+}
+
+/* — Casco + animação de balanço — */
+.boat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bobbing 5s ease-in-out infinite;
+  transform-origin: center bottom;
+  /* A transição do tilt é macia para não tremer */
+  transition: transform 0.25s ease-out;
+}
+
+/* Balanço natural sobre as ondas */
+@keyframes bobbing {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  20% {
+    transform: translateY(-8px) rotate(-0.8deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(0.5deg);
+  }
+
+  80% {
+    transform: translateY(-5px) rotate(-0.3deg);
+  }
+}
+
+/* — Going Merry Image — */
+.merryWrapper {
+  position: relative;
+  width: 300px;
+  /* Aumentado para a imagem de perfil do usuário */
+  filter:
+    drop-shadow(0 24px 48px rgba(0, 0, 0, 0.5)) drop-shadow(0 4px 12px rgba(30, 136, 229, 0.3));
+  margin-bottom: -16px;
+}
+
+.merryImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  z-index: 2;
+  position: relative;
+}
+
+/* — Reflexo na água — espelhado com distorção e fade */
+.reflectionContainer {
+  position: absolute;
+  top: 96%;
+  left: 0;
+  width: 100%;
+  height: 55%;
+  overflow: hidden;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.merryReflection {
+  width: 100%;
+  height: auto;
+  transform: scaleY(-0.75) skewX(6deg);
+  filter: blur(3px) saturate(1.6) brightness(0.9);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 90%);
+}
+
+/* — Esteira em V (wake V-shape) — */
+.wakeV {
+  position: absolute;
+  /* Atrás do barco em relação ao movimento */
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.wakeLeft,
+.wakeRight {
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.5));
+  border-radius: 50%;
+  filter: blur(2px);
+  transform-origin: right center;
+}
+
+.wakeLeft {
+  right: 0;
+  transform: rotate(15deg);
+  animation: wakeLeftAnim 2.5s ease-out infinite;
+}
+
+.wakeRight {
+  left: 0;
+  transform: scaleX(-1) rotate(15deg);
+  animation: wakeRightAnim 2.5s ease-out infinite 0.3s;
+}
+
+@keyframes wakeLeftAnim {
+  0% {
+    opacity: 0.6;
+    transform: rotate(15deg) scaleX(0.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(20deg) scaleX(1.4);
+  }
+}
+
+@keyframes wakeRightAnim {
+  0% {
+    opacity: 0.6;
+    transform: scaleX(-1) rotate(15deg) scaleX(0.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(-1) rotate(20deg) scaleX(1.4);
+  }
+}
+
+/* — Espuma e bolhas na base (linha d'água) — */
+.wakeContainer {
+  position: absolute;
+  bottom: -8px;
+  left: -30px;
+  right: -30px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.wake {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.7) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(3px);
+  animation: wakeSpread 2.2s ease-out infinite;
+  transition: transform 0.2s ease;
+}
+
+.wakeSecondary {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 6px;
+  background: radial-gradient(ellipse at center, rgba(180, 220, 255, 0.5) 0%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(5px);
+  animation: wakeSpread 3s ease-out infinite 1s;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes wakeSpread {
+  0% {
+    transform: scaleX(0.4);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scaleX(1.6);
+    opacity: 0;
+  }
+}
+
+/* Pontos de bolha (espuma detalhada) */
+.bubbles {
+  position: absolute;
+  bottom: -8px;
+  left: 15%;
+  width: 70%;
+  height: 12px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.85) 15%, transparent 15%);
+  background-size: 8px 8px;
+  opacity: 0.25;
+  animation: moveBubbles 0.9s linear infinite;
+  filter: blur(0.5px);
+}
+
+@keyframes moveBubbles {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -16px 0;
+  }
+}
+
+/* — Sombra submersa (sombra difusa sob o casco) — */
+.shadow {
+  position: absolute;
+  bottom: -20px;
+  left: 15%;
+  right: 15%;
+  height: 12px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.45) 0%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(10px);
+  z-index: -1;
+}
+
+/* — Responsivo — */
+@media (max-width: 768px) {
+  .boatContainer {
+    top: 58%;
+  }
+
+  .merryWrapper {
+    width: 200px;
+  }
+}

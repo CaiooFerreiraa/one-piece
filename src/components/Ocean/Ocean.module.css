@@ -1,0 +1,517 @@
+/* Seção com scroll alto para criar espaço para a animação sticky */
+.ocean {
+  position: relative;
+  /* Cada projeto = 300vh de scroll (5 projetos × 300vh = 1500vh total) */
+  height: 2000vh;
+  background: var(--color-ocean-deep);
+}
+
+/* O viewport fixo durante o scroll da seção */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* — Fundo — */
+.background {
+  position: absolute;
+  inset: 0;
+}
+
+.skyGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      #010913 0%,
+      #0A2463 35%,
+      #0D3B8C 55%,
+      #1565C0 68%,
+      #1A6FCC 75%,
+      #0e3060 85%,
+      #020B18 100%);
+}
+
+/* Linhas de perspectiva na água — simula a calha de ondas distantes */
+/* Linha de perspectiva na água — simula a calha de ondas distantes */
+.horizonGlow {
+  position: absolute;
+  /* Linha do horizonte onde as ilhas ficam — em torno de 45% */
+  bottom: 52%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent 5%,
+      rgba(100, 181, 246, 0.4) 25%,
+      rgba(30, 136, 229, 0.65) 50%,
+      rgba(100, 181, 246, 0.4) 75%,
+      transparent 95%);
+  filter: blur(2px);
+  animation: horizonShimmer 6s ease-in-out infinite;
+}
+
+@keyframes horizonShimmer {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scaleX(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1.02);
+  }
+}
+
+/* — Nuvens — */
+.cloudsLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  pointer-events: none;
+}
+
+.cloudA,
+.cloudB,
+.cloudC {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(20px);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.cloudA {
+  top: 15%;
+  left: 8%;
+  width: 220px;
+  height: 60px;
+  animation: driftCloud 30s linear infinite;
+}
+
+.cloudB {
+  top: 28%;
+  right: 12%;
+  width: 160px;
+  height: 45px;
+  animation: driftCloud 22s linear infinite reverse;
+}
+
+.cloudC {
+  top: 8%;
+  left: 50%;
+  width: 120px;
+  height: 35px;
+  animation: driftCloud 26s linear infinite;
+  animation-delay: -12s;
+}
+
+.mistOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 20%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  pointer-events: none;
+  animation: driftMist 20s linear infinite;
+  z-index: 5;
+}
+
+@keyframes driftMist {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 1000px 0;
+  }
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(10, 36, 99, 0.05) 100%);
+  z-index: 6;
+  pointer-events: none;
+}
+
+@keyframes driftCloud {
+  from {
+    transform: translateX(-200px);
+  }
+
+  to {
+    transform: translateX(calc(100vw + 200px));
+  }
+}
+
+/* — Superfície oceânica — */
+.oceanSurface {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* 55% de altura cobre da linha do horizonte até o fundo */
+  height: 55%;
+  overflow: hidden;
+}
+
+.wave1,
+.wave2,
+.wave3 {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  border-radius: 50%;
+}
+
+/* Camada profunda — cor escura do fundo */
+.wave1 {
+  top: -20%;
+  height: 100%;
+  background: radial-gradient(ellipse 65% 55% at 50% 0%,
+      #1565C0 0%,
+      #0D3B8C 40%,
+      #0A2463 80%);
+  opacity: 0.9;
+  animation: wave 9s ease-in-out infinite;
+}
+
+/* Camada média — tons de azul oceano */
+.wave2 {
+  top: -10%;
+  height: 90%;
+  background: radial-gradient(ellipse 65% 55% at 50% 0%,
+      #1E88E5 0%,
+      #1565C0 50%,
+      #0D3B8C 100%);
+  opacity: 0.55;
+  animation: wave 11s ease-in-out infinite reverse;
+  animation-delay: -4s;
+}
+
+/* Camada superfície — tons mais claros e cristas */
+.wave3 {
+  top: -2%;
+  height: 75%;
+  background: radial-gradient(ellipse 65% 55% at 50% 0%,
+      #42A5F5 0%,
+      #1E88E5 40%,
+      #1565C0 80%);
+  opacity: 0.4;
+  animation: wave 13s ease-in-out infinite;
+  animation-delay: -7s;
+}
+
+@keyframes wave {
+
+  0%,
+  100% {
+    transform: translateX(0) scaleY(1);
+  }
+
+  25% {
+    transform: translateX(-2.5%) scaleY(1.015);
+  }
+
+  50% {
+    transform: translateX(0) scaleY(0.985);
+  }
+
+  75% {
+    transform: translateX(2.5%) scaleY(1.01);
+  }
+}
+
+/* Cristas de ondas (whitecaps) — linhas de espuma na superfície */
+.oceanSurface::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -10%;
+  right: -10%;
+  height: 6px;
+  background: repeating-linear-gradient(90deg,
+      transparent 0px,
+      transparent 60px,
+      rgba(255, 255, 255, 0.12) 60px,
+      rgba(255, 255, 255, 0.12) 80px,
+      transparent 80px);
+  filter: blur(2px);
+  animation: whitecaps 8s linear infinite;
+  z-index: 5;
+}
+
+@keyframes whitecaps {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-80px);
+  }
+}
+
+/* — Caminho das ilhas — */
+.pathLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* islands atualizam internamente */
+}
+
+/* — HUD — */
+.hud {
+  position: absolute;
+  bottom: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  padding: var(--space-3) var(--space-6);
+  z-index: var(--z-ui);
+  white-space: nowrap;
+}
+
+.hudLabel {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.progressBar {
+  position: relative;
+  width: 200px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-ocean-light), var(--color-gold));
+  border-radius: var(--radius-full);
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.progressShip {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--text-base);
+  transition: left 0.1s linear;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+}
+
+.hudValue {
+  font-size: var(--text-xs);
+  color: var(--color-gold);
+  font-weight: 700;
+  min-width: 30px;
+}
+
+/* — Scroll hint — */
+.scrollHint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  z-index: var(--z-ui);
+  animation: float 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) translateY(-8px);
+  }
+}
+
+/* — Modal — */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  position: relative;
+  background: linear-gradient(135deg, #0D1B2A, #162038);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10);
+  max-width: 520px;
+  width: 100%;
+  box-shadow: var(--shadow-card), 0 0 60px rgba(255, 215, 0, 0.1);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modalClose {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.modalClose:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+}
+
+.modalIslandBadge {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-4);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  color: var(--color-gold);
+  margin-bottom: var(--space-3);
+}
+
+.modalDesc {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin-bottom: var(--space-6);
+}
+
+.techList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.techTag {
+  padding: var(--space-1) var(--space-3);
+  background: rgba(30, 136, 229, 0.15);
+  border: 1px solid rgba(30, 136, 229, 0.3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--color-ocean-surface);
+  font-weight: 500;
+}
+
+.modalActions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.modalBtnGithub,
+.modalBtnLive {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.modalBtnGithub {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text-primary);
+}
+
+.modalBtnGithub:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modalBtnLive {
+  background: var(--color-gold);
+  color: var(--color-ocean-deep);
+}
+
+.modalBtnLive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.4);
+}
+
+@media (max-width: 600px) {
+  .hud {
+    display: none;
+  }
+
+  .modal {
+    padding: var(--space-6);
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+}

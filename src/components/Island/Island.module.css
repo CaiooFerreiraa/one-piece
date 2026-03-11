@@ -1,0 +1,337 @@
+/* =============================================
+   ISLAND — Ilhas CSS/SVG com perspectiva de distância
+   ============================================= */
+
+.islandContainer {
+  position: absolute;
+  /* Posicionado na linha do horizonte médio */
+  top: 50%;
+  /* transition suave de opacidade e escala */
+  transition:
+    opacity 0.5s ease,
+    transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.island {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =============================================
+   EFEITOS DE COSTA (SHORE)
+   ============================================= */
+
+.shoreEffect {
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 55px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.foam {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(30, 136, 229, 0.14) 55%,
+      transparent 100%);
+  filter: blur(5px);
+  animation: shoreBreath 5s ease-in-out infinite;
+}
+
+.ripples {
+  position: absolute;
+  inset: -8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  filter: blur(1.5px);
+  animation: rippleExpand 5.5s ease-out infinite;
+}
+
+.ripples::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(30, 136, 229, 0.25);
+  border-radius: 50%;
+  animation: rippleExpand 5.5s ease-out infinite 2.75s;
+}
+
+@keyframes shoreBreath {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.12);
+    opacity: 0.9;
+  }
+}
+
+@keyframes rippleExpand {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+
+  70% {
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* =============================================
+   CORPO DA ILHA — container do SVG
+   ============================================= */
+
+.islandBody {
+  position: relative;
+  /* Tamanho menor = sensação de longe */
+  width: 200px;
+  height: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* Névoa atmosférica ao redor (mist de mar aberto) */
+.islandBody::before {
+  content: '';
+  position: absolute;
+  inset: -25px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 65%,
+      rgba(30, 136, 229, 0.12) 0%,
+      rgba(10, 36, 99, 0.08) 55%,
+      transparent 75%);
+  filter: blur(16px);
+  z-index: 0;
+  animation: mistPulse 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Reflexo aquático embaixo */
+.islandBody::after {
+  content: '';
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 55px;
+  background: radial-gradient(ellipse at center,
+      rgba(30, 136, 229, 0.3) 0%,
+      rgba(21, 101, 192, 0.15) 50%,
+      transparent 75%);
+  filter: blur(14px);
+  z-index: 0;
+  animation: reflectionPulse 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes mistPulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes reflectionPulse {
+
+  0%,
+  100% {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateX(-50%) scaleX(1.12);
+    opacity: 1;
+  }
+}
+
+/* Wrapper do SVG — flutuação suave */
+.islandWrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  animation: floatIsland 8s ease-in-out infinite;
+  filter:
+    drop-shadow(0 16px 32px rgba(0, 0, 0, 0.6)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.islandSvg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Glow de cor temática da ilha */
+.colorGlow {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 50px;
+  filter: blur(20px);
+  z-index: 1;
+  animation: glowPulse 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateX(-50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1.15);
+  }
+}
+
+/* Estado ativo — barco chegando perto */
+.active .islandWrapper {
+  filter:
+    drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 20px rgba(30, 136, 229, 0.5)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(1.12) saturate(1.15);
+}
+
+@keyframes floatIsland {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+
+  30% {
+    transform: translateY(-8px) rotateX(1.5deg);
+  }
+
+  65% {
+    transform: translateY(-3px) rotateX(0.8deg);
+  }
+}
+
+/* =============================================
+   INFO LABEL (LOG POSE STYLE)
+   ============================================= */
+
+.info {
+  position: absolute;
+  top: -110px;
+  z-index: 30;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.logPoseFrame {
+  background: rgba(2, 11, 24, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid var(--color-gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.65),
+    inset 0 0 18px rgba(255, 215, 0, 0.12),
+    0 0 0 1px rgba(255, 215, 0, 0.06);
+  min-width: 175px;
+}
+
+.logPoseFrame::after {
+  content: '';
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 11px solid var(--color-gold);
+}
+
+.islandTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-gold);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.45);
+  white-space: nowrap;
+}
+
+.clickHint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =============================================
+   RESPONSIVO
+   ============================================= */
+
+@media (max-width: 768px) {
+  .islandContainer {
+    top: 48%;
+  }
+
+  .islandBody {
+    width: 120px;
+    height: 100px;
+  }
+
+  .shoreEffect {
+    width: 110px;
+    height: 40px;
+  }
+
+  .info {
+    top: -95px;
+  }
+
+  .islandTitle {
+    font-size: var(--text-sm);
+  }
+}
